@@ -5,7 +5,7 @@ require 'm2h/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "m2h"
-  spec.version       = M2h::VERSION
+  spec.version       = M2H::VERSION
   spec.authors       = ["arakanemacs"]
   spec.email         = ["arakanemacs@gmail.com"]
   spec.description   = %q{styled markdown parser}

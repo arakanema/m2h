@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.dirname(__FILE__) + "/../lib")
+require 'm2h'
+
+M2H::OptParser.new do |opt|
+  opt.on('-h', '--help')     {|v| puts opt.help; exit}
+  opt.on('-v', '--version')  {|v| puts "M2H::VERSION => #{M2H::VERSION}"; exit}
+
+  begin
+    opt.parse!(ARGV)
+    if ARGV.empty?
+      puts opt.help
+      exit 0
+    end
+    M2H::Render.render! M2H::Base.new(ARGV)
+  rescue OptionParser::InvalidOption => e
+    M2H::OptionError.new(e.message)
+    puts opt.help
+    exit 3
+  end
+end
+
+# vim set: ft=ruby fenc= utf-8 ff=unix
