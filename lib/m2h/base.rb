@@ -21,7 +21,7 @@ module M2H
       files.each { |f|
         unless File.exists?(File.expand_path(f))
           is_valid = false
-          @errors.push('PathError: Could not found #{f}')
+          @errors.push("PathError: Could not found #{f}")
         else
           expanded_paths.push(File.expand_path(f))
         end
