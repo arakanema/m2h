@@ -8,7 +8,7 @@ module M2H
 
       def initialize(html_body)
         @html_body    = html_body
-        @pages        = html_body.split("////") # page_break
+        @pages        = html_body.split(/\/{4,}/) # page_break
         @erb_template = File.open(File.dirname(__FILE__) + "/_layout.erb").read
         @page_count   = @pages.size
         @html         = generate_html(@pages)
