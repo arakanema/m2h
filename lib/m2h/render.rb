@@ -12,8 +12,6 @@ module M2H
         title, content = nil, nil
         title = $1 if /h1>(.+)\<\/h1./ =~ html_body
         content = html_body
-        # page break
-        content.gsub!(/\/{4,}/, "<div class='break'/>")
         return ERB.new(@erb).result(binding)
       end
     end
@@ -35,7 +33,16 @@ module M2H
 
       base.files.each { |bf|
         html_body = markdown.render(File.open(bf, "r:utf-8").read)
-        File.open("#{bf}.html", "w:#{base.sys_enc}").write(doc.pack(html_body))
+        blocks = html_body.split("////") # page_break
+        page_count = blocks.size
+        pages = blocks.map.with_index { |block, i|
+          unless (i + 1) == page_count
+            "<div class='page_number'>#{i+1}</div>\n" + block + "\n<div class='break'/>\n"
+          else
+            "<div class='page_number'>#{i+1}</div>\n" + block
+          end
+        }.join
+        File.open("#{bf}.html".encode(base.sys_enc), "w:#{base.sys_enc}").write(doc.pack(pages))
         puts "render: #{bf}.html"
       }
     end
