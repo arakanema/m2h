@@ -35,7 +35,7 @@ module M2H
 
       base.files.each { |bf|
         html_body = markdown.render(File.open(bf, "r:utf-8").read)
-        File.open("#{bf}.html", "w:utf-8").write(doc.pack(html_body))
+        File.open("#{bf}.html", "w:#{base.sys_enc}").write(doc.pack(html_body))
         puts "render: #{bf}.html"
       }
     end

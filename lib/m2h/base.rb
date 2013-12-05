@@ -1,10 +1,11 @@
 module M2H
   class Base
-    attr_reader :files
+    attr_reader :files, :sys_enc
 
     def initialize(argv)
       @errors = []
       @files = path_inspect(argv)
+      @sys_enc = Encoding.locale_charmap
       if @errors.empty?
         return self
       else
