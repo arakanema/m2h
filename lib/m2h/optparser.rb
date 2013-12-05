@@ -6,7 +6,7 @@ module M2H
 
     def initialize
       @help = <<-HELP
-  Usage  : m2h <*.markdown>
+  Usage  : m2h <markdonw_file1> <markdonw_file2> ...
   Options:
     -h, --help            : show this messages
     -v, --version         : show version infomation
