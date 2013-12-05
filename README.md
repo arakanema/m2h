@@ -2,6 +2,13 @@
 
 markdown to html compiler.
 
+## feature
+
+- page-break(改ページ)
+  - '////' means page-break.('////' 4つ以上の スラッシュで改ページ指定)
+- page-number(ページナンバーを表示)
+- add header style each pages(ヘッダっぽいスタイル)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -18,4 +25,4 @@ Or install it yourself as:
 
 ## Usage
 
-m2h <file>
+m2h <markdonw_file1> <markdonw_file2> ...
