@@ -4,15 +4,40 @@ module M2H
     require "erb"
 
     class Document
-      def initialize
-        @erb = File.open(File.dirname(__FILE__) + "/_layout.erb").read
+      attr_accessor :html_body
+
+      def initialize(html_body)
+        @html_body    = html_body
+        @pages        = html_body.split("////") # page_break
+        @erb_template = File.open(File.dirname(__FILE__) + "/_layout.erb").read
+        @page_count   = @pages.size
+        @html         = generate_html(@pages)
       end
 
-      def pack(html_body)
+      def generate_html(pages)
+        @html = pages.map.with_index { |page, i|
+          unless (i + 1) == @page_count
+            "<div class='page_number'>#{i+1}/#{@page_count}</div>\n" + page + "\n<div class='break'/>\n"
+          else
+            "<div class='page_number'>#{i+1}/#{@page_count}</div>\n" + page
+          end
+        }.join
+      end
+
+      def bind!
         title, content = nil, nil
         title = $1 if /h1>(.+)\<\/h1./ =~ html_body
-        content = html_body
-        return ERB.new(@erb).result(binding)
+        set_header(title)
+        content = @html
+        return ERB.new(@erb_template).result(binding)
+      end
+
+      def set_header(title)
+        @html.gsub!(/page_number'>/, "page_number'>#{title}&nbsp;")
+      end
+
+      def write(path, enc)
+        File.open(path, enc).write(self.bind!)
       end
     end
 
@@ -29,20 +54,9 @@ module M2H
         with_toc_data: true,
       )
 
-      doc = Document.new
-
       base.files.each { |bf|
-        html_body = markdown.render(File.open(bf, "r:utf-8").read)
-        blocks = html_body.split("////") # page_break
-        page_count = blocks.size
-        pages = blocks.map.with_index { |block, i|
-          unless (i + 1) == page_count
-            "<div class='page_number'>#{i+1}</div>\n" + block + "\n<div class='break'/>\n"
-          else
-            "<div class='page_number'>#{i+1}</div>\n" + block
-          end
-        }.join
-        File.open("#{bf}.html".encode(base.sys_enc), "w:#{base.sys_enc}").write(doc.pack(pages))
+        doc = Document.new(markdown.render(File.open(bf, "r:utf-8").read))
+        doc.write("#{bf}.html".encode(base.sys_enc), "w:#{base.sys_enc}")
         puts "render: #{bf}.html"
       }
     end
