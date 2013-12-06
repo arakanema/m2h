@@ -26,3 +26,7 @@ Or install it yourself as:
 ## Usage
 
     $ m2h file1.md file2.markdown ...
+
+## Plan
+- generate cover (表紙の追加)
+- auto compile (自動コンパイル)
