@@ -8,8 +8,10 @@ module M2H
       @help = <<-HELP
   Usage  : m2h <markdonw_file1> <markdonw_file2> ...
   Options:
-    -h, --help            : show this messages
-    -v, --version         : show version infomation
+    -s, --serif   : font-family -> serif
+    -t, --toc     : use tocify.js
+    -h, --help    : show this messages
+    -v, --version : show version infomation
       HELP
       super
     end

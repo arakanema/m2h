@@ -29,6 +29,7 @@ module M2H
         title = $1 if /h1>(.+)\<\/h1./ =~ html_body
         set_header(title)
         content = @html
+        serif = @serif
         return ERB.new(@erb_template).result(binding)
       end
 
@@ -38,6 +39,14 @@ module M2H
 
       def write(path, enc)
         File.open(path, enc).write(self.bind!)
+      end
+
+      def set_serif
+        @serif = "serif, "
+      end
+
+      def set_toc
+        @toc = true
       end
     end
 
@@ -49,13 +58,15 @@ module M2H
         no_intra_emphasis: true,
         strikethrough: true,
         footnotes: true,
-        autolink:true,
+        autolink: true,
         tables: true,
         with_toc_data: true,
       )
 
       base.files.each { |bf|
         doc = Document.new(markdown.render(File.open(bf, "r:utf-8").read))
+        doc.set_serif if base.serif
+        doc.set_toc if base.toc
         doc.write("#{bf}.html".encode(base.sys_enc), "w:#{base.sys_enc}")
         puts "render: #{bf}.html"
       }
