@@ -3,25 +3,19 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'm2h/version'
 
-Gem::Specification.new do |spec|
-  spec.name          = "m2h"
-  spec.version       = M2H::VERSION
-  spec.authors       = ["arakanemacs"]
-  spec.email         = ["arakanemacs@gmail.com"]
-  spec.description   = %q{styled markdown parser}
-  spec.summary       = %q{markdown to html}
-  spec.homepage      = "https://github.com/arakanemacs/m2h"
-  spec.license       = "MIT"
-  spec.require_paths = ["lib"]
+Gem::Specification.new do |s|
+  s.name          = "m2h"
+  s.version       = "0.1.0"
+  s.authors       = ["arakanemacs"]
+  s.email         = ["arakanemacs@gmail.com"]
+  s.description   = %q{styled markdown parser}
+  s.summary       = %q{markdown to html}
+  s.homepage      = "https://github.com/arakanemacs/m2h"
+  s.license       = "MIT"
 
-  spec.add_runtime_dependency "redcarpet", [">= 3.0.0"]
+  s.add_runtime_dependency "redcarpet", [">= 3.0.0"]
 
-  spec.add_development_dependency "bundler", ["~> 1.3"]
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "test-unit"
-
-  spec.executables = 'm2h'
-  spec.files = %w[
+  s.files = %w[
     Gemfile
     LICENSE
     README.md
@@ -35,4 +29,6 @@ Gem::Specification.new do |spec|
     lib/m2h/version.rb
     m2h.gemspec
   ]
+  s.executables = 'm2h'
+  s.require_paths = ["lib"]
 end
