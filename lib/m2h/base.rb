@@ -1,12 +1,13 @@
 module M2H
   class Base
-    attr_reader :files, :sys_enc, :serif, :toc
+    attr_reader :files, :sys_enc, :serif, :cover, :toc
 
     def initialize(argv, option)
       @errors  = []
       @files   = path_inspect(argv)
       @sys_enc = Encoding.locale_charmap
       @serif   = option[:serif] ? true : false
+      @cover   = option[:cover] ? true : false
       @toc     = option[:toc] ? true : false
       if @errors.empty?
         return self

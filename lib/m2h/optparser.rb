@@ -9,6 +9,7 @@ module M2H
   Usage  : m2h <markdonw_file1> <markdonw_file2> ...
   Options:
     -s, --serif   : font-family -> serif
+    -c, --cover   : with cover page
     -t, --toc     : use tocify.js
     -h, --help    : show this messages
     -v, --version : show version infomation

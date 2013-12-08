@@ -10,6 +10,7 @@ option = {
 
 M2H::OptParser.new do |opt|
   opt.on('-s', '--serif')   {|v| option[:serif] = true}
+  opt.on('-c', '--cover')     {|v| option[:cover]   = true}
   opt.on('-t', '--toc')     {|v| option[:toc]   = true}
   opt.on('-h', '--help')    {|v| puts opt.help; exit}
   opt.on('-v', '--version') {|v| puts "M2H::VERSION => #{M2H::VERSION}"; exit}

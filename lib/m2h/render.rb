@@ -22,19 +22,16 @@ module M2H
             "<div class='page_number'>#{i+1}/#{@page_count}</div>\n" + page
           end
         }.join
+        @title = $1 if /h1>(.+)\<\/h1./ =~ html_body
+        set_header
       end
 
       def bind!
-        title, content = nil, nil
-        title = $1 if /h1>(.+)\<\/h1./ =~ html_body
-        set_header(title)
-        content = @html
-        serif = @serif
         return ERB.new(@erb_template).result(binding)
       end
 
-      def set_header(title)
-        @html.gsub!(/page_number'>/, "page_number'>#{title}&nbsp;")
+      def set_header
+        @html.gsub!(/page_number'>/, "page_number'>#{@title}&nbsp;")
       end
 
       def write(path, enc)
@@ -43,6 +40,12 @@ module M2H
 
       def set_serif
         @serif = "serif, "
+      end
+
+      def set_cover
+        cover = "\n<div class='cover'><h1>#{@title}</h1></div>\n"
+        cover += "<div class='break'/>\n"
+        @cover = cover
       end
 
       def set_toc
@@ -66,6 +69,7 @@ module M2H
       base.files.each { |bf|
         doc = Document.new(markdown.render(File.open(bf, "r:utf-8").read))
         doc.set_serif if base.serif
+        doc.set_cover if base.cover
         doc.set_toc if base.toc
         doc.write("#{bf}.html".encode(base.sys_enc), "w:#{base.sys_enc}")
         puts "render: #{bf}.html"
