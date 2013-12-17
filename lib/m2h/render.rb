@@ -7,23 +7,24 @@ module M2H
       attr_accessor :html_body
 
       def initialize(html_body)
-        @html_body    = html_body
-        @pages        = html_body.split(/\/{4,}/) # page_break
         @erb_template = File.open(File.dirname(__FILE__) + "/_layout.erb").read
-        @page_count   = @pages.size
-        @html         = generate_html(@pages)
+        @html         = generate_html(html_body)
+        @header       = false
       end
 
-      def generate_html(pages)
-        @html = pages.map.with_index { |page, i|
+      def generate_html(html_body)
+        @title      = $1 if /h1>(.+)\<\/h1./ =~ html_body
+        @pages      = html_body.split(/\/{4,}/) # page_break
+        @page_count = @pages.size
+        html = @pages.map.with_index { |page, i|
           unless (i + 1) == @page_count
             "<div class='page_number'>#{i+1}/#{@page_count}</div>\n" + page + "\n<div class='break'/>\n"
           else
             "<div class='page_number'>#{i+1}/#{@page_count}</div>\n" + page
           end
         }.join
-        @title = $1 if /h1>(.+)\<\/h1./ =~ html_body
-        set_header
+        html.gsub!(/page_number'>/, "page_number'>#{@title}&nbsp;")
+        return html
       end
 
       def bind!
@@ -31,7 +32,7 @@ module M2H
       end
 
       def set_header
-        @html.gsub!(/page_number'>/, "page_number'>#{@title}&nbsp;")
+        @header = true
       end
 
       def write(path, enc)
@@ -69,6 +70,7 @@ module M2H
       base.files.each { |bf|
         doc = Document.new(markdown.render(File.open(bf, "r:utf-8").read))
         doc.set_serif if base.serif
+        doc.set_header if base.header
         doc.set_cover if base.cover
         doc.set_toc if base.toc
         doc.write("#{bf}.html".encode(base.sys_enc), "w:#{base.sys_enc}")
