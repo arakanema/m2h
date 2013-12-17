@@ -6,9 +6,10 @@ markdown to html compiler.
 
 - page-break
   - '////' 4 or more slashes.
-- header style
-  - with title and page-number
-- cover
+- header option
+  - with title and page-number.
+- cover option
+  - set title to cover page.
 
 ## Installation
 
@@ -27,10 +28,11 @@ And then execute:
 
 ## Usage
 
-    Usage  : m2h <markdonw_file1> <markdonw_file2> ...
+    Usage  : m2h <markdonw_file1> <markdonw_file2> ... <options>
     Options:
       -s, --serif   : font-family -> serif
-      -c, --cover   : with cover page
+      -d, --header  : with header
+      -c, --cover   : with cover
       -h, --help    : show this messages
       -v, --version : show version infomation
 
